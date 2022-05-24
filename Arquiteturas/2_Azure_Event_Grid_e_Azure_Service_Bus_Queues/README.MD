@@ -356,7 +356,7 @@ _Crie um Projeto .NET_
     dotnet run
     ```
 
-    >**Observação**: se houver algum erro de compilação, revise o arquivo **Program.cs** na pasta **\Solution\\EventPublisher** .
+    >**Nota**: se houver algum erro de compilação, revise o arquivo **Program.cs** na pasta **\Solution\\EventPublisher** .
 
 1. Observe a saída da mensagem de sucesso do aplicativo de console em execução no momento.
 
@@ -507,7 +507,7 @@ dotnet new console --name MessagePublisher --output .
     static ServiceBusSender sender;
     ```
 
-1. Insira o seguinte código para criar um método **Main** assíncrono:
+1. Insira o seguinte código para criar um método assíncrono **Main** :
 
     ```csharp
     public static async Task Main(string[] args)
@@ -634,64 +634,56 @@ Revise o método **Main** , que agora deve consistir no seguinte código:
     
        ![Service Bus queue metrics and message count in the Azure portal](./../images/l10_display_queue_with_messages_portal.png)
      
-1.  In the **Settings** section, select **Service Bus Explorer (preview)**.
+1.  Na seção **Settings**, selecione **Service Bus Explorer (preview)**.
 
-1.  On the **Service Bus Explorer (preview)** blade, select the **Peek** tab header and, on the **Peek** tab, select the **Peek** button.
+1.  Na folha **Service Bus Explorer (preview)**, selecione o cabeçalho da guia **Peek** , e na guia **Peek**, selecione o botão **Peek**.
 
-1.  Verify that the queue contains three messages.
+1.  Verifique se a queue contém três mensagens.
 
-1.  Select the first message and review its content in the **Message** pane.
+1.  Selecione a primeira mensagem e revise seu conteúdo no painel **Message**.
 
     The following screenshot displays the first message's content.
          
-       ![Service Bus queue content in Service Bus Explorer](./media/l10_peek_queue_with_messages_explorer.png)
+       ![Service Bus queue content in Service Bus Explorer](./../images/l10_peek_queue_with_messages_explorer.png)
 
      
-1.  Close the **Message** pane.
+1.  Feche o painel **Message**.
 
-#### Review
+#### Passo 4: Criar um projeto .NET Core para ler mensagens de uma  queue do Service Bus
 
-In this exercise, you configured your .NET project that published messages into an Azure Service Bus queue.
-
-### Exercise 3: Create a .NET Core project to read messages from a Service Bus queue
-
-#### Task 1: Create a .NET project
+Crie um projeto .NET
 
 1.  From the lab computer, start Visual Studio Code.
 
-1.  In Visual Studio Code, in the **File** menu, select **Open Folder**.
+1.  No Visual Studio Code, navegue até a pasta **\Starter\\MessageReader**, e a abra no terminal.
 
-1.  In the **Open Folder** window, browse to **Allfiles (F):\\Allfiles\\Labs\\10\\Starter\\MessageReader**, and then select **Select Folder**.
-
-1.  In the **Visual Studio Code** window, activate the shortcut menu, and then select **Open in Integrated Terminal**.
-
-1.  At the terminal prompt, run the following command to create a new .NET project named **MessageReader** in the current folder:
+1.  No prompt do terminal, execute o seguinte comando para criar um novo projeto .NET chamado **MessageReader** na pasta atual:
 
     ```
     dotnet new console --name MessageReader --output .
     ```
 
-1.  Run the following command to import version 7.2.1 of the **Azure.Messaging.ServiceBus** package from NuGet:
+1.  Execute o seguinte comando para importar a versão 7.2.1 do pacote **Azure.Messaging.ServiceBus** do NuGet:
 
     ```
     dotnet add package Azure.Messaging.ServiceBus --version 7.2.1
     ```
 
-1.  At the terminal prompt, run the following command to build the .NET Core console application:
+1.  No prompt do terminal, execute o seguinte comando para compilar o aplicativo de console do .NET Core:
 
     ```
     dotnet build
     ```
 
-1.  Select **Kill Terminal** (the **Recycle Bin** icon) to close the terminal pane and any associated processes.
+1.  Feche o painel do terminal e quaisquer processos associados.
 
-#### Task 2: Read messages from an Azure Service Bus queue
+#### Passo 5: Ler mensagens de uma queue do Azure Service Bus 
 
-1.  In the **Explorer** pane of the **Visual Studio Code** window, open the **Program.cs** file.
+1.  No   painel **Explorer** da janela **Visual Studio Code** , abra o arquivo **Program.cs** .
 
-1.  On the code editor tab for the **Program.cs** file, delete all the code in the existing file.
+1.  Na guia do editor de código do  arquivo **Program.cs**  , exclua todo o código do arquivo existente.
 
-1.  Add the same code which was included in the Program.cs file to allow for interaction with Azure Service Bus queues, but set the namespace to **MessageReader**:
+1.  Adicione o mesmo código que foi incluído no arquivo Program.cs para permitir a interação com as queues do Azure Service Bus, mas defina o namespace como **MessageReader**:
 
     ```csharp
     using System;
@@ -708,15 +700,15 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  As before, update the **storageConnectionString** string constant by setting its value to **Primary Connection String** of the **Service Bus** namespace you recorded earlier in this lab.
+1.  Como antes, atualize a constante de string **storageConnectionString** definindo seu valor como **Primary Connection String** do namespace do **Service Bus**  que você registrou anteriormente neste laboratório.
 
-1.  Enter the following code to create a ServiceBusProcessor that will be used to process messages from the queue:
+1.  Digite o seguinte código para criar um ServiceBusProcessor que será usado para processar mensagens da queue:
 
     ```csharp
     static ServiceBusProcessor processor;
     ```
 
-1.  Enter the following code to create a static async **MessageHandler** task that displays the body of messages in the queue as they are being processed and deletes them after the processing completes:
+1.  Insira o código a seguir para criar uma tarefa **MessageHandler** assíncrona estática que exiba o corpo das mensagens na fila conforme elas estão sendo processadas e as exclua após a conclusão do processamento:
 
     ```csharp
     static async Task MessageHandler(ProcessMessageEventArgs args)
@@ -727,7 +719,7 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  Enter the following code to create a static async **ErrorHandler** task that manages any exceptions encountered during message processing:
+1.  Insira o código a seguir para criar uma tarefa **ErrorHandler** assíncrona estática que gerencia todas as exceções encontradas durante o processamento de mensagens:
 
     ```csharp
     static Task ErrorHandler(ProcessErrorEventArgs args)
@@ -737,7 +729,7 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  Enter the following code to create an asynchronous **Main** method:
+1. Insira o seguinte código para criar um método **Main**:
 
     ```csharp
     static async Task Main(string[] args)
@@ -745,7 +737,7 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  Review the **Program.cs** file, which should now include the following code. The `<storage-connection-string>` placeholder represents the connection string to the target Azure Service Bus namespace:
+1.  Revise o arquivo **Program.cs** , que agora deve incluir o código a seguir. O espaço reservado `<storage-connection-string>` representa a cadeia de conexão de destino para o namespace do Azure Service Bus :
 
     ```csharp
     using System;
@@ -777,16 +769,16 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  In the **Main** method, add the following code to initialize *client* of type **ServiceBusClient** that will provide connectivity to the Service Bus namespace and **processor** that will be responsible for processing of messages:
+1.  No método **Main**, adicione o seguinte código para inicializar o *client* do tipo **ServiceBusClient** que fornecerá conectividade ao namespace do Service Bus e o **processor** que será responsável pelo processamento das mensagens:
 
     ```csharp
     client = new ServiceBusClient(storageConnectionString);
     processor = client.CreateProcessor(queueName, new ServiceBusProcessorOptions());
     ```
 
-    > **Note**: As mentioned earlier, the Service Bus client is safe to cache and use as a singleton for the lifetime of the application. This is considered one of the best practices when publishing and reading messages on a regular basis.
+    > **Note**: conforme mencionado anteriormente, o cliente do Service Bus client é seguro para armazenar em cache e usar como um singleton durante a vida útil do aplicativo. Essa é considerada uma das melhores práticas ao publicar e ler mensagens regularmente.
 
-1.  In the **Main** method, add the following lines of code to create a try block, which first implements a message and error processing handler, initiates message processing, and stops processing following a user input:
+1.  No método **Main**, adicione as seguintes linhas de código para criar um bloco **try**, que primeiro implementa um manipulador de processamento de mensagens e erros, inicia o processamento de mensagens e interrompe o processamento após uma entrada do usuário:
 
     ```csharp
     try
@@ -802,7 +794,7 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  In the **Main** method, add the following lines of code to create a finally block that asynchronously disposes of the **processor** and **client** objects, releasing any network and unmanaged resources:
+1.  No método **Main**, adicione as seguintes linhas de código para criar um bloco **finally** que descarta de forma assíncrona os objetos, **processor** e **client** , liberando qualquer rede e recursos não gerenciados:
 
     ```csharp
     finally
@@ -812,7 +804,7 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  Review the **Main** method, which should now consist of the following code:
+1.  Revise o método **Main** , que agora deve consistir no seguinte código:
 
     ```csharp
     static async Task Main()
@@ -838,58 +830,37 @@ In this exercise, you configured your .NET project that published messages into 
     }
     ```
 
-1.  Save the **Program.cs** file.
+1. Salve o arquivo **Program.cs** .
 
-1.  In the **Visual Studio Code** window, activate the shortcut menu, and then select **Open in Integrated Terminal**.
+1. No terminal do **Visual Studio Code**, execute o seguinte comando para executar o aplicativo Web .NET:
 
-1.  At the terminal prompt, run the following command to launch the .NET Core console app:
-
-    ```
+    ```powershell
     dotnet run
     ```
 
-    > **Note**: If you encounter any errors, review the **Program.cs** file in the **Allfiles (F):\\Allfiles\\Labs\\10\\Solution\\MessageReader** folder.
+    > **Note**: se houver algum erro de compilação, revise o arquivo **Program.cs** na pasta **\Solution\\MessageReader**.
 
-1.  Verify that the console message displayed at the terminal prompt states that each of the three messages in the queue has been received.
+1.  Verifique se a mensagem do console exibida no prompt do terminal informa que cada uma das três mensagens na queue foi recebida
 
 1.  At the terminal prompt, press any key to stop the receiver and terminate the app execution.
 
-1.  Select **Kill Terminal** (the **Recycle Bin** icon) to close the terminal pane and any associated processes.
+1. Fechar o terminal atualmente aberto e quaisquer processos associados.
 
-1.  Switch back to the Microsoft Edge browser displaying the Service Bus queue **messagequeue** in the Azure portal.
+1.  Volte ao navegador e vá a queue **messagequeue** do Azure Service Bus, no portal do Azure.
 
-1.  On the **Service Bus Explorer (preview)** blade, select **Refresh**, and note that the number of active messages in the queue has changed to **0**.
+1.  Na Folha **Service Bus Explorer (preview)**, selecione **Refresh**, e observe que o número de mensagens ativas na queue mudou para **0** .
 
-#### Review
-
-In this exercise, you read and deleted messages from the Azure Service Bus queue by using the .NET library.
-
-### Exercise 4: Clean up your subscription
+#### Passo 5: Exclua os recursos desse Laboratório.
 
 #### Task 1: Open Azure Cloud Shell
 
-1.  In the Azure portal, select the **Cloud Shell** icon ![Cloud Shell icon](./media/az204_lab_CloudShell.png) to open a new Bash session. If Cloud Shell defaults to a PowerShell session, select **PowerShell** and, in the drop-down menu, select **Bash**.
-
-    > **Note**: If this is the first time you are starting **Cloud Shell**, when prompted to select either **Bash** or **PowerShell**, select **PowerShell**. When you are presented with the **You have no storage mounted** message, select the subscription you are using in this lab, and select **Create storage**.
-
-#### Task 2: Delete resource groups
-
-1.  In the **Cloud Shell** pane, run the following command to delete the **PubSubEvents** resource group:
+1.  No portal do Azure, no painel **Cloud Shell** , execute o seguinte comando para excluir o grupo de recursos **PubSubEvents** e com eles todos os recusos desse laboratório:
 
     ```
     az group delete --name PubSubEvents --no-wait --yes
     ```
     
-     > **Note**: The command executes asynchronously (as determined by the *--no-wait* parameter), so while you'll be able to run another Azure CLI command immediately afterwards within the same Bash session, it'll take a few minutes before the resource groups are actually removed.
+     > **Observação**: o comando é executado de forma assíncrona (conforme determinado pelo parâmetro --no-wait ), portanto, embora você possa executar outro comando da CLI do Azure imediatamente depois na mesma sessão do Bash, levará alguns minutos antes que o recurso grupos são realmente removidos.
   
-1.  Close the **Cloud Shell** pane in the portal.
+1.  Feche o painel do Cloud Shell no portal.
 
-#### Task 3: Close the active applications
-
-1.  Close the currently running Microsoft Edge application.
-
-1.  Close the currently running Visual Studio Code application.
-
-#### Review
-
-In this exercise, you cleaned up your subscription by removing the resource groups used in this lab.
