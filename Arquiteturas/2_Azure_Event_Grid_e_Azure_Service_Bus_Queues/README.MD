@@ -403,7 +403,7 @@ _Crie um Projeto .NET_
 
     ![image](../../Arquiteturas/images/rootmangesharedacesskeylab2.png)
 
-    >**Nota** : Não importa qual das duas teclas disponíveis você escolher. Eles são intercambiáveis.
+    >**Nota** : Não importa qual das duas Connection String disponíveis você escolher. Eles são intercambiáveis.
 
 5. Criar Queue
 
@@ -416,3 +416,5 @@ _Crie um Projeto .NET_
 #### Passo 2: Criar um projeto .NET Core para publicar mensagens em uma queue do Service Bus
 
 1. Abra o powershell no VScode e entre na pasta **EventPublisher** em _(..\servicebus\Starter\MessagePublisher)_ como na figura abaixo.
+
+  
