@@ -537,22 +537,22 @@ dotnet new console --name MessagePublisher --output .
     }
     ```
 
-1.  In the **Main** method, add the following code to initialize *client* of type **ServiceBusClient** that will provide connectivity to the Service Bus namespace and **sender** that will be responsible for sending messages:
+1.  No método **Main** , adicione o seguinte código para inicializar o **_client_** do tipo **ServiceBusClient** que fornecerá conectividade ao namespace do Service Bus e o **sender** que será responsável pelo envio de mensagens:
 
     ```csharp
     client = new ServiceBusClient(storageConnectionString);
     sender = client.CreateSender(queueName);  
     ```
 
-    > **Note**: The Service Bus client is safe to cache and use as a singleton for the lifetime of the application. This is considered one of the best practices when publishing and reading messages on a regular basis.
+    > **Nota**: Conforme mencionado anteriormente, o cliente do Service Bus é seguro para armazenar em cache e usar como um singleton durante a vida útil do aplicativo. Essa é considerada uma das melhores práticas ao publicar e ler mensagens regularmente.
 
-1.  In the **Main** method, add the following code to create a **ServiceBusMessageBatch** object that will allow you to combine multiple messages into a batch by using the **TryAddMessage** method:
+15.  No método **Main**, adicione o seguinte código para criar um objeto **ServiceBusMessageBatch** , que permitirá combinar várias mensagens em um lote usando o método **TryAddMessage**:
 
     ```csharp
     using ServiceBusMessageBatch messageBatch = await sender.CreateMessageBatchAsync();
     ```
 
-1.  In the **Main** method, add the following lines of code to add messages to a batch and throw an exception if a message size exceeds the limits supported by the batch:
+1.  No método **Main**, adicione as seguintes linhas de código para adicionar mensagens a um lote e lançar uma exceção se o tamanho de uma mensagem exceder os limites suportados pelo lote:
 
     ```csharp
     for (int i = 1; i <= numOfMessages; i++)
@@ -564,7 +564,7 @@ dotnet new console --name MessagePublisher --output .
     }
     ```
 
-1.  In the **Main** method, add the following lines of code to create a try block, with **sender** asynchronously publishing messages in the batch to the target queue:
+1.  No método **Main**, adicione as seguintes linhas de código para criar um bloco **try**, com o **sender** publicando mensagens de forma assíncrona no lote para a queue de destino:
 
     ```csharp
     try
@@ -574,7 +574,7 @@ dotnet new console --name MessagePublisher --output .
     }
     ```
 
-1.  In the **Main** method, add the following lines of code to create a finally block that asynchronously disposes of the **sender** and **client** objects, releasing any network and unmanaged resources:
+1.  No método **Main**, adicione as seguintes linhas de código para criar um bloco finally que descarta de forma assíncrona os objetos **sender** and **client**, liberando qualquer rede e recursos não gerenciados:
 
     ```csharp
     finally
@@ -583,8 +583,7 @@ dotnet new console --name MessagePublisher --output .
         await client.DisposeAsync();
     }
     ```
-
-1.  Review the **Main** method, which should now consist of the following code: 
+Revise o método **Main** , que agora deve consistir no seguinte código: 
 
     ```csharp
     public static async Task Main(string[] args)
@@ -612,29 +611,28 @@ dotnet new console --name MessagePublisher --output .
     }
     ```
 
-1.  Save the **Program.cs** file.
+1. Salve o  arquivo **Program.cs**.
 
-1.  In the **Visual Studio Code** window, activate the shortcut menu, and then select **Open in Integrated Terminal**.
+1.  No terminal do **Visual Studio Code**, execute o seguinte comando para executar o aplicativo Web .NET:
 
-1.  At the terminal prompt, run the following command to launch the .NET Core console app:
-
-    ```
+    ```powershell
     dotnet run
     ```
 
-    > **Note**: If you encounter any errors, review the **Program.cs** file in the **Allfiles (F):\\Allfiles\\Labs\\10\\Solution\\MessagePublisher** folder.
+    > **Nota**: se houver algum erro, revise o arquivo **Program.cs** na pasta **\Solution\\MessagePublisher**.
 
-1.  Verify that the console message displayed at the terminal prompt states that a batch of three messages has been published to queue.
+1.  Verifique se a mensagem do console exibida no prompt do terminal informa que um lote de três mensagens foi publicado na queue.
 
-1.  Select **Kill Terminal** (the **Recycle Bin** icon) to close the terminal pane and any associated processes.
+1.  Fechar o painel do terminal e seus processos associados.
 
-1.  Switch to the Microsoft Edge browser displaying the Service Bus queue **messagequeue** in the Azure portal.
 
-1.  Review the **Essentials** pane and note that the queue contains three active messages.
+1.  Vá ao navegador para ver a mensagens da queue **messagequeue** do Service Bus no portal do Azure.
 
-    The following screenshot displays the Service Bus queue metrics and message count.
-     
-       ![Service Bus queue metrics and message count in the Azure portal](./media/l10_display_queue_with_messages_portal.png)
+1.  Revise o painel **Essentials** e observe que a fila contém três mensagens ativas.
+
+    A captura de tela a seguir exibe as métricas da queue do Service Bus e a contagem de mensagens.
+    
+       ![Service Bus queue metrics and message count in the Azure portal](./../images/l10_display_queue_with_messages_portal.png)
      
 1.  In the **Settings** section, select **Service Bus Explorer (preview)**.
 
