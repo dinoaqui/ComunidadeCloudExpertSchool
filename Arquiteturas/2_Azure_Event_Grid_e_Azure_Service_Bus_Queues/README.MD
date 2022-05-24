@@ -417,4 +417,481 @@ _Crie um Projeto .NET_
 
 1. Abra o powershell no VScode e entre na pasta **EventPublisher** em _(..\servicebus\Starter\MessagePublisher)_ como na figura abaixo.
 
+ ![image](../../Arquiteturas/images/messagepublisherlab2starter.png)
   
+2. Rode o seguinte comando para criar um novo projeto .NET chamado **MessagePublisher** na pasta atual:
+
+```powershell
+dotnet new console --name MessagePublisher --output .
+```
+
+> **Nota**: o comando **dotnet new** criará um novo projeto de **console** em uma pasta com o mesmo nome do projeto.
+
+3. Execute o seguinte comando para importar a versão 7.2.1 do **Azure.Messaging.ServiceBus** do NuGet:
+
+    ```powershell
+    dotnet add package Azure.Messaging.ServiceBus --version 7.2.1
+    ```
+
+    > **Observação**: o comando **dotnet add package** adicionará o pacote **Azure.Messaging.ServiceBus** do NuGet. Para mais informações, acesse [Azure.Messaging.ServiceBus](https://www.nuget.org/packages/Azure.Messaging.ServiceBus/).
+
+4. Execute o seguinte comando para compilar o aplicativo Web .NET:
+
+    ```powershell
+    dotnet build
+    ```
+
+5. Selecione **Kill Terminal** ou o ícone **Recycle Bin** para fechar o terminal atualmente aberto e quaisquer processos associados.
+
+#### Passo 3: Publicar mensagens em uma fila no Service Bus do 
+
+1. No painel **Explorer** da janela **Visual Studio Code**, abra o arquivo **Program.cs**.
+
+2. Na guia do editor de código do arquivo **Program.cs** , exclua todo o código do arquivo existente.
+
+3.  Adicione as seguintes linhas de código para facilitar o uso dos namespaces internos que serão referenciados neste arquivo:
+
+    ```csharp
+    using System;
+    using System.Threading.Tasks;
+    ```
+
+4.  Adicione o seguinte código para importar o namespace **Azure.Messaging.ServiceBus** incluído no pacote **Azure.Storage.Queues** importado do NuGet:
+
+    ```csharp
+    using Azure.Messaging.ServiceBus;
+    ```
+    
+1.  Insira o seguinte código para criar uma nova classe **Program** no namespace MessagePublisher:
+
+    ```csharp
+    namespace MessagePublisher
+    {
+       public class Program
+       {
+       }
+    }
+    ```
+
+1.  Na classe **Program**, insira o seguinte código para criar uma constante string chamada **storageConnectionString**:
+
+    ```csharp
+    private const string storageConnectionString = "";
+    ```
+
+1.  Atualize a constante de string **storageConnectionString** definindo seu valor como **Primary Connection String** do namespace do Service Bus namespace que você guardou anteriormente neste laboratório.
+
+
+
+1.  Insira o código a seguir para criar uma constante de string chamada **queueName** com um valor de **messagequeue**, , correspondente ao nome da fila do Service Bus que você criou anteriormente neste exercício.
+
+    ```csharp
+    private const string queueName = "messagequeue";
+    ```
+
+1.  Digite o código a seguir para criar uma constante inteira que armazena o número de mensagens a serem enviadas para a queue de destino:
+
+    ```csharp
+    private const int numOfMessages = 3;
+    ```
+
+1.  Insira o seguinte código para criar um cliente do Service Bus client that will own the connection to the targetque será o proprietário da conexão com a queue de destino:
+
+    ```csharp
+    static ServiceBusClient client;
+    ```
+
+1.  Insira o seguinte código para criar um remetente do Service Bus client que será usado para publicar mensagens na queue de destino:
+
+    ```csharp
+    static ServiceBusSender sender;
+    ```
+
+1. Insira o seguinte código para criar um método **Main** assíncrono:
+
+    ```csharp
+    public static async Task Main(string[] args)
+    {
+    }
+    ```
+
+1. Revise o arquivo **Program.cs**, que agora deve incluir o código a seguir. Observe que o`<storage-connection-string>`é um espaço reservado que representa a cadeia de conexão para o namespace do Azure Service Bus de destino:
+
+    ```csharp
+    using System;
+    using System.Threading.Tasks;
+    using Azure.Messaging.ServiceBus;
+    namespace MessagePublisher
+    {
+        public class Program
+        {
+            private const string storageConnectionString = "<storage-connection-string>";
+            private const string queueName = "messagequeue";
+            private const int numOfMessages = 3;
+            static ServiceBusClient client;
+            static ServiceBusSender sender;
+            public static async Task Main(string[] args)
+            {
+            }
+        }
+    }
+    ```
+
+1.  In the **Main** method, add the following code to initialize *client* of type **ServiceBusClient** that will provide connectivity to the Service Bus namespace and **sender** that will be responsible for sending messages:
+
+    ```csharp
+    client = new ServiceBusClient(storageConnectionString);
+    sender = client.CreateSender(queueName);  
+    ```
+
+    > **Note**: The Service Bus client is safe to cache and use as a singleton for the lifetime of the application. This is considered one of the best practices when publishing and reading messages on a regular basis.
+
+1.  In the **Main** method, add the following code to create a **ServiceBusMessageBatch** object that will allow you to combine multiple messages into a batch by using the **TryAddMessage** method:
+
+    ```csharp
+    using ServiceBusMessageBatch messageBatch = await sender.CreateMessageBatchAsync();
+    ```
+
+1.  In the **Main** method, add the following lines of code to add messages to a batch and throw an exception if a message size exceeds the limits supported by the batch:
+
+    ```csharp
+    for (int i = 1; i <= numOfMessages; i++)
+    {
+        if (!messageBatch.TryAddMessage(new ServiceBusMessage($"Message {i}")))
+        {
+            throw new Exception($"The message {i} is too large to fit in the batch.");
+        }
+    }
+    ```
+
+1.  In the **Main** method, add the following lines of code to create a try block, with **sender** asynchronously publishing messages in the batch to the target queue:
+
+    ```csharp
+    try
+    {
+        await sender.SendMessagesAsync(messageBatch);
+        Console.WriteLine($"A batch of {numOfMessages} messages has been published to the queue.");
+    }
+    ```
+
+1.  In the **Main** method, add the following lines of code to create a finally block that asynchronously disposes of the **sender** and **client** objects, releasing any network and unmanaged resources:
+
+    ```csharp
+    finally
+    {
+        await sender.DisposeAsync();
+        await client.DisposeAsync();
+    }
+    ```
+
+1.  Review the **Main** method, which should now consist of the following code: 
+
+    ```csharp
+    public static async Task Main(string[] args)
+    {
+        client = new ServiceBusClient(storageConnectionString);
+        sender = client.CreateSender(queueName);
+        using ServiceBusMessageBatch messageBatch = await sender.CreateMessageBatchAsync();
+        for (int i = 1; i <= numOfMessages; i++)
+        {
+            if (!messageBatch.TryAddMessage(new ServiceBusMessage($"Message {i}")))
+            {
+                throw new Exception($"The message {i} is too large to fit in the batch.");
+            }
+        }
+        try
+        {
+            await sender.SendMessagesAsync(messageBatch);
+            Console.WriteLine($"A batch of {numOfMessages} messages has been published to the queue.");
+        }
+        finally
+        {
+            await sender.DisposeAsync();
+            await client.DisposeAsync();
+        }
+    }
+    ```
+
+1.  Save the **Program.cs** file.
+
+1.  In the **Visual Studio Code** window, activate the shortcut menu, and then select **Open in Integrated Terminal**.
+
+1.  At the terminal prompt, run the following command to launch the .NET Core console app:
+
+    ```
+    dotnet run
+    ```
+
+    > **Note**: If you encounter any errors, review the **Program.cs** file in the **Allfiles (F):\\Allfiles\\Labs\\10\\Solution\\MessagePublisher** folder.
+
+1.  Verify that the console message displayed at the terminal prompt states that a batch of three messages has been published to queue.
+
+1.  Select **Kill Terminal** (the **Recycle Bin** icon) to close the terminal pane and any associated processes.
+
+1.  Switch to the Microsoft Edge browser displaying the Service Bus queue **messagequeue** in the Azure portal.
+
+1.  Review the **Essentials** pane and note that the queue contains three active messages.
+
+    The following screenshot displays the Service Bus queue metrics and message count.
+     
+       ![Service Bus queue metrics and message count in the Azure portal](./media/l10_display_queue_with_messages_portal.png)
+     
+1.  In the **Settings** section, select **Service Bus Explorer (preview)**.
+
+1.  On the **Service Bus Explorer (preview)** blade, select the **Peek** tab header and, on the **Peek** tab, select the **Peek** button.
+
+1.  Verify that the queue contains three messages.
+
+1.  Select the first message and review its content in the **Message** pane.
+
+    The following screenshot displays the first message's content.
+         
+       ![Service Bus queue content in Service Bus Explorer](./media/l10_peek_queue_with_messages_explorer.png)
+
+     
+1.  Close the **Message** pane.
+
+#### Review
+
+In this exercise, you configured your .NET project that published messages into an Azure Service Bus queue.
+
+### Exercise 3: Create a .NET Core project to read messages from a Service Bus queue
+
+#### Task 1: Create a .NET project
+
+1.  From the lab computer, start Visual Studio Code.
+
+1.  In Visual Studio Code, in the **File** menu, select **Open Folder**.
+
+1.  In the **Open Folder** window, browse to **Allfiles (F):\\Allfiles\\Labs\\10\\Starter\\MessageReader**, and then select **Select Folder**.
+
+1.  In the **Visual Studio Code** window, activate the shortcut menu, and then select **Open in Integrated Terminal**.
+
+1.  At the terminal prompt, run the following command to create a new .NET project named **MessageReader** in the current folder:
+
+    ```
+    dotnet new console --name MessageReader --output .
+    ```
+
+1.  Run the following command to import version 7.2.1 of the **Azure.Messaging.ServiceBus** package from NuGet:
+
+    ```
+    dotnet add package Azure.Messaging.ServiceBus --version 7.2.1
+    ```
+
+1.  At the terminal prompt, run the following command to build the .NET Core console application:
+
+    ```
+    dotnet build
+    ```
+
+1.  Select **Kill Terminal** (the **Recycle Bin** icon) to close the terminal pane and any associated processes.
+
+#### Task 2: Read messages from an Azure Service Bus queue
+
+1.  In the **Explorer** pane of the **Visual Studio Code** window, open the **Program.cs** file.
+
+1.  On the code editor tab for the **Program.cs** file, delete all the code in the existing file.
+
+1.  Add the same code which was included in the Program.cs file to allow for interaction with Azure Service Bus queues, but set the namespace to **MessageReader**:
+
+    ```csharp
+    using System;
+    using System.Threading.Tasks;
+    using Azure.Messaging.ServiceBus;
+    namespace MessageReader
+    {
+       public class Program
+       {
+          private const string storageConnectionString = "";
+          static string queueName = "messagequeue";
+          static ServiceBusClient client;
+       }
+    }
+    ```
+
+1.  As before, update the **storageConnectionString** string constant by setting its value to **Primary Connection String** of the **Service Bus** namespace you recorded earlier in this lab.
+
+1.  Enter the following code to create a ServiceBusProcessor that will be used to process messages from the queue:
+
+    ```csharp
+    static ServiceBusProcessor processor;
+    ```
+
+1.  Enter the following code to create a static async **MessageHandler** task that displays the body of messages in the queue as they are being processed and deletes them after the processing completes:
+
+    ```csharp
+    static async Task MessageHandler(ProcessMessageEventArgs args)
+    {
+        string body = args.Message.Body.ToString();
+        Console.WriteLine($"Received: {body}");
+        await args.CompleteMessageAsync(args.Message);
+    }
+    ```
+
+1.  Enter the following code to create a static async **ErrorHandler** task that manages any exceptions encountered during message processing:
+
+    ```csharp
+    static Task ErrorHandler(ProcessErrorEventArgs args)
+    {
+        Console.WriteLine(args.Exception.ToString());
+        return Task.CompletedTask;
+    }
+    ```
+
+1.  Enter the following code to create an asynchronous **Main** method:
+
+    ```csharp
+    static async Task Main(string[] args)
+    {
+    }
+    ```
+
+1.  Review the **Program.cs** file, which should now include the following code. The `<storage-connection-string>` placeholder represents the connection string to the target Azure Service Bus namespace:
+
+    ```csharp
+    using System;
+    using System.Threading.Tasks;
+    using Azure.Messaging.ServiceBus;
+    namespace MessageReader
+    {
+        class Program
+        {
+            static string storageConnectionString = "";
+            static string queueName = "messagequeue";
+            static ServiceBusClient client;
+            static ServiceBusProcessor processor;
+            static async Task MessageHandler(ProcessMessageEventArgs args)
+            {
+                string body = args.Message.Body.ToString();
+                Console.WriteLine($"Received: {body}");
+                await args.CompleteMessageAsync(args.Message);
+            }
+            static Task ErrorHandler(ProcessErrorEventArgs args)
+            {
+                Console.WriteLine(args.Exception.ToString());
+                return Task.CompletedTask;
+            }
+            static async Task Main()
+            {
+            }
+        }
+    }
+    ```
+
+1.  In the **Main** method, add the following code to initialize *client* of type **ServiceBusClient** that will provide connectivity to the Service Bus namespace and **processor** that will be responsible for processing of messages:
+
+    ```csharp
+    client = new ServiceBusClient(storageConnectionString);
+    processor = client.CreateProcessor(queueName, new ServiceBusProcessorOptions());
+    ```
+
+    > **Note**: As mentioned earlier, the Service Bus client is safe to cache and use as a singleton for the lifetime of the application. This is considered one of the best practices when publishing and reading messages on a regular basis.
+
+1.  In the **Main** method, add the following lines of code to create a try block, which first implements a message and error processing handler, initiates message processing, and stops processing following a user input:
+
+    ```csharp
+    try
+    {
+        processor.ProcessMessageAsync += MessageHandler;
+        processor.ProcessErrorAsync += ErrorHandler;
+        await processor.StartProcessingAsync();
+        Console.WriteLine("Wait for a minute and then press any key to end the processing");
+        Console.ReadKey();
+        Console.WriteLine("\nStopping the receiver...");
+        await processor.StopProcessingAsync();
+        Console.WriteLine("Stopped receiving messages");
+    }
+    ```
+
+1.  In the **Main** method, add the following lines of code to create a finally block that asynchronously disposes of the **processor** and **client** objects, releasing any network and unmanaged resources:
+
+    ```csharp
+    finally
+    {
+        await processor.DisposeAsync();
+        await client.DisposeAsync();
+    }
+    ```
+
+1.  Review the **Main** method, which should now consist of the following code:
+
+    ```csharp
+    static async Task Main()
+    {
+        client = new ServiceBusClient(storageConnectionString);
+        processor = client.CreateProcessor(queueName, new ServiceBusProcessorOptions());
+        try
+        {
+            processor.ProcessMessageAsync += MessageHandler;
+            processor.ProcessErrorAsync += ErrorHandler;
+            await processor.StartProcessingAsync();
+            Console.WriteLine("Wait for a minute and then press any key to end the processing");
+            Console.ReadKey();
+            Console.WriteLine("\nStopping the receiver...");
+            await processor.StopProcessingAsync();
+            Console.WriteLine("Stopped receiving messages");
+        }
+        finally
+        {
+            await processor.DisposeAsync();
+            await client.DisposeAsync();
+        }
+    }
+    ```
+
+1.  Save the **Program.cs** file.
+
+1.  In the **Visual Studio Code** window, activate the shortcut menu, and then select **Open in Integrated Terminal**.
+
+1.  At the terminal prompt, run the following command to launch the .NET Core console app:
+
+    ```
+    dotnet run
+    ```
+
+    > **Note**: If you encounter any errors, review the **Program.cs** file in the **Allfiles (F):\\Allfiles\\Labs\\10\\Solution\\MessageReader** folder.
+
+1.  Verify that the console message displayed at the terminal prompt states that each of the three messages in the queue has been received.
+
+1.  At the terminal prompt, press any key to stop the receiver and terminate the app execution.
+
+1.  Select **Kill Terminal** (the **Recycle Bin** icon) to close the terminal pane and any associated processes.
+
+1.  Switch back to the Microsoft Edge browser displaying the Service Bus queue **messagequeue** in the Azure portal.
+
+1.  On the **Service Bus Explorer (preview)** blade, select **Refresh**, and note that the number of active messages in the queue has changed to **0**.
+
+#### Review
+
+In this exercise, you read and deleted messages from the Azure Service Bus queue by using the .NET library.
+
+### Exercise 4: Clean up your subscription
+
+#### Task 1: Open Azure Cloud Shell
+
+1.  In the Azure portal, select the **Cloud Shell** icon ![Cloud Shell icon](./media/az204_lab_CloudShell.png) to open a new Bash session. If Cloud Shell defaults to a PowerShell session, select **PowerShell** and, in the drop-down menu, select **Bash**.
+
+    > **Note**: If this is the first time you are starting **Cloud Shell**, when prompted to select either **Bash** or **PowerShell**, select **PowerShell**. When you are presented with the **You have no storage mounted** message, select the subscription you are using in this lab, and select **Create storage**.
+
+#### Task 2: Delete resource groups
+
+1.  In the **Cloud Shell** pane, run the following command to delete the **PubSubEvents** resource group:
+
+    ```
+    az group delete --name PubSubEvents --no-wait --yes
+    ```
+    
+     > **Note**: The command executes asynchronously (as determined by the *--no-wait* parameter), so while you'll be able to run another Azure CLI command immediately afterwards within the same Bash session, it'll take a few minutes before the resource groups are actually removed.
+  
+1.  Close the **Cloud Shell** pane in the portal.
+
+#### Task 3: Close the active applications
+
+1.  Close the currently running Microsoft Edge application.
+
+1.  Close the currently running Visual Studio Code application.
+
+#### Review
+
+In this exercise, you cleaned up your subscription by removing the resource groups used in this lab.
