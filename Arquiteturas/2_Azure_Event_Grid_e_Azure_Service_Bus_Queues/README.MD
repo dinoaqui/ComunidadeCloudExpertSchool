@@ -362,7 +362,7 @@ _Crie um Projeto .NET_
 
 1. Selecione **Kill Terminal** ou o ícone **Recycle Bin** para fechar o terminal atualmente aberto e quaisquer processos associados.
 
-#### Passo 9: Observe published events
+#### Passo 9: Observe os eventos publicados
 
 1. Retorne à janela do navegador com o aplicativo Web **Azure Event Grid Viewer**.
 
@@ -372,3 +372,47 @@ _Crie um Projeto .NET_
 
 1. Retorne ao portal do Azure.
 
+## Tarefa 2
+
+#### Passo 1: Criar recursos
+
+ 1. Abra o Azure Cloud Shell
+
+    No portal do Azure, selecione o ícone do **Cloud Shell** ![Cloud Shell icon](./../images/az204_lab_CloudShell.png) para abrir uma nova sessão do Bash. Se o padrão do Cloud Shell for uma sessão do PowerShell, selecione **PowerShell** e, no menu suspenso, selecione **Bash** .
+
+2. Criar uma fila do Service Bus Azure
+
+
+    **Cloud Shell**
+
+    ```bash
+    az servicebus namespace create --resource-group "PubSubEvents" --name "sbnamespace<yourname>" --location eastus --sku Basic
+    ```
+    >**Observação** : aguarde a conclusão da tarefa de criação antes de prosseguir com este laboratório.
+
+3. Capturar **Primary Connection String** de acesso de politica compartilhada do recurso **Service Bus Namespace** recêm criado. 
+
+    **Cloud Shell**
+    
+    ```bash
+    az servicebus namespace authorization-rule keys list --resource-group PubSubEvents --namespace-name "sbnamespace<yourname>" --name RootManageSharedAccessKey
+    ```
+4. Obter string de conexão primária.
+
+    Copie a **Primary Connection String** e guarde o valor copiado. Você o usará posteriormente neste laboratório.
+
+    ![image](../../Arquiteturas/images/rootmangesharedacesskeylab2.png)
+
+    >**Nota** : Não importa qual das duas teclas disponíveis você escolher. Eles são intercambiáveis.
+
+5. Criar Queue
+
+    **Cloud Shell**
+    
+    ```bash
+    az servicebus queue create --resource-group PubSubEvents --namespace-name "sbnamespace<yourname>" --name messagequeue
+     ```
+
+#### Passo 2: Criar um projeto .NET Core para publicar mensagens em uma queue do Service Bus
+
+1. Abra o powershell no VScode e entre na pasta **EventPublisher** em _(..\servicebus\Starter\MessagePublisher)_ como na figura abaixo.
