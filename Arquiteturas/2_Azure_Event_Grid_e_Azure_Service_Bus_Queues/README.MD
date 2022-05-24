@@ -852,7 +852,7 @@ Crie um projeto .NET
 
 #### Passo 5: Exclua os recursos desse Laboratório.
 
-#### Task 1: Open Azure Cloud Shell
+Open Azure Cloud Shell
 
 1.  No portal do Azure, no painel **Cloud Shell** , execute o seguinte comando para excluir o grupo de recursos **PubSubEvents** e com eles todos os recusos desse laboratório:
 
