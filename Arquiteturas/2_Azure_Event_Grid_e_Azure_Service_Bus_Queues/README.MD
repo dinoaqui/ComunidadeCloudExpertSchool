@@ -71,7 +71,7 @@
 
     **Cloud Shell**
     ```bash
-    az eventgrid topic create -g "PubSubEvents" --name "hrttopic<yourname>" -l "eastus" --public-network-access enabled --identity systemassigned
+    az eventgrid topic create -g "PubSubEvents" --name "hrttopic<yourname>" -l "eastus" --public-network-access enabled 
     ```
 
     Capture o valor do id do recurso como mostra a figura abaixo. Você usará esse valor posteriormente no laboratório.
@@ -89,7 +89,7 @@
 
     **Cloud Shell**
     ```bash
-    az webapp create -g "PubSubEvents" -p EventPlan -n  "eventviewer<yourname>" -i microsoftlearning/azure-event-grid-viewer:latest
+    az webapp create -g "PubSubEvents" -p EventPlan -n "eventviewer<yourname>" -i microsoftlearning/azure-event-grid-viewer:latest
     ```
     > **Observação**: Aguarde o Azure concluir a criação do aplicativo Web antes de continuar com o laboratório.
 
@@ -342,9 +342,9 @@ _Crie um Projeto .NET_
             }
         );
         await client.SendEventAsync(firstEvent);
-        Console.WriteLine("First event published");
+        Console.WriteLine("Primeiro evento publicado");
         await client.SendEventAsync(secondEvent);
-        Console.WriteLine("Second event published");
+        Console.WriteLine("Segundo evento publicado");
     }
     ```
 
