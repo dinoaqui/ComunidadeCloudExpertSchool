@@ -842,7 +842,7 @@ Crie um projeto .NET
 
 1.  Verifique se a mensagem do console exibida no prompt do terminal informa que cada uma das três mensagens na queue foi recebida
 
-1.  At the terminal prompt, press any key to stop the receiver and terminate the app execution.
+1.  No prompt do terminal, pressione qualquer tecla para parar o receptor e encerrar a execução do aplicativo.
 
 1. Fechar o terminal atualmente aberto e quaisquer processos associados.
 
