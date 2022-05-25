@@ -14,13 +14,13 @@
 
 2. Na janela do navegador aberta, navegue até o portal do Azure (<https://portal.azure.com>), e entre com a conta que você usará para este laboratório.
 
-    > **Observação**: se esta for a primeira vez que você entra no portal do Azure, será oferecido um tour pelo portal. Selecione **Começar** para pular o tour e começar a usar o portal.
+    > **Nota**: se esta for a primeira vez que você entra no portal do Azure, será oferecido um tour pelo portal. Selecione **Começar** para pular o tour e começar a usar o portal.
 
 #### Passo 2: Abra o Azure Cloud Shell
 
  1. No portal do Azure, selecione o ícone do **Cloud Shell** ![Cloud Shell icon](./../images/az204_lab_CloudShell.png) para abrir uma nova sessão do Bash. Se o padrão do Cloud Shell for uma sessão do PowerShell, selecione **PowerShell** e, no menu suspenso, selecione **Bash** .
 
-    > **Observação**: se esta for a primeira vez que você está iniciando o **Cloud Shell** , quando solicitado a selecionar **Bash** ou **PowerShell** , selecione **Bash** . Quando você receber a mensagem Você não tem armazenamento montado , selecione a assinatura que você está usando neste laboratório e, em seguida, selecione Criar armazenamento .
+    > **Nota**: se esta for a primeira vez que você está iniciando o **Cloud Shell** , quando solicitado a selecionar **Bash** ou **PowerShell** , selecione **Bash** . Quando você receber a mensagem Você não tem armazenamento montado , selecione a assinatura que você está usando neste laboratório e, em seguida, selecione Criar armazenamento .
 
  2. No portal do Azure, no prompt de comando do **Cloud Shell** , execute o seguinte comando para obter a versão da ferramenta Azure Command-Line Interface (Azure CLI):
 
@@ -30,31 +30,31 @@
 
 #### Passo 3: Revise o registro do provedor Microsoft.EventGrid
 
-1. No **painel CLoud Shell**, execute o seguinte comando para obter uma lista de subgrupos e comandos no nível raiz da CLI do Azure:
+1. No **painel Cloud Shell**, execute o seguinte comando para obter uma lista de subgrupos e comandos no nível raiz da CLI do Azure:
 
     ```bash
     az --help
     ```
 
-2. No **painel CLoud Shell**, execute o seguinte comando para obter uma lista dos comandos disponíveis para provedores de recursos:
+2. No **painel Cloud Shell**, execute o seguinte comando para obter uma lista dos comandos disponíveis para provedores de recursos:
 
     ```bash
     az provider --help
     ```
 
-3. No **painel CLoud Shell**, execute o seguinte comando para listar todos os provedores registrados atualmente:
+3. No **painel Cloud Shell**, execute o seguinte comando para listar todos os provedores registrados atualmente:
 
     ```bash
     az provider list
     ```
 
-4. No **painel CLoud Shell**, execute o seguinte comando para listar apenas os namespaces dos provedores registrados no momento:
+4. No **painel Cloud Shell**, execute o seguinte comando para listar apenas os namespaces dos provedores registrados no momento:
 
     ```bash
     az provider list --query "[].namespace"
     ```
 
-5. No **painel CLoud Shell**, revise a lista de provedores registrados no momento. Observe que o provedor **Microsoft.EventGrid** está atualmente incluído na lista de provedores.
+5. No **painel Cloud Shell**, revise a lista de provedores registrados no momento. Observe que o provedor **Microsoft.EventGrid** está atualmente incluído na lista de provedores.
 
 6. Feche o **painel Cloud Shell**.
 
@@ -91,17 +91,17 @@
     ```bash
     az webapp create -g "PubSubEvents" -p EventPlan -n "eventviewer<yourname>" -i microsoftlearning/azure-event-grid-viewer:latest
     ```
-    > **Observação**: Aguarde o Azure concluir a criação do aplicativo Web antes de continuar com o laboratório.
-
-    Capture o valor do link da URL como mostra a figura abaixo. Você usará esse valor posteriormente no laboratório.
-
+    > **Nota**: Aguarde o Azure concluir a criação do aplicativo Web antes de continuar com o laboratório.
+    + Capture o valor do link da URL como mostra a figura abaixo.
+    + Abra o link no navegador e verifique se foi criado. Mantenha essa aba aberta.
+    
     ![image](../../Arquiteturas/images/urlwebservicelab2.png)
 
 #### Passo 5: Criar uma assinatura do Event Grid
 
 **Cloud Shell**
 ```bash
-    az eventgrid event-subscription create --name "basicsub" --source-resource-id "/subscriptions/<subscriptionID>/resourceGroups/PubSubEvents/providers/Microsoft.EventGrid/topics/hrttopic<yourname>" --endpoint "https://eventviewer<yourname>.azurewebsites.net/api/updates" --endpoint-type "webhook" 
+az eventgrid event-subscription create --name "basicsub" --source-resource-id "/subscriptions/<subscriptionID>/resourceGroups/PubSubEvents/providers/Microsoft.EventGrid/topics/hrttopic<yourname>" --endpoint "https://eventviewer<yourname>.azurewebsites.net/api/updates" --endpoint-type "webhook" 
 ```
 
 + No parâmetro **--source-resource-id** , insira o valor do ID do tópico do EventGrid que você guardou anteriormente.
@@ -120,7 +120,7 @@
 
 5. Na categoria **Settings**, selecione o link **Access keys**.
 
-6. Na seção **Access keys**, registre o valor da caixa de texto **Key 1**. Você usará esse valor posteriormente no laboratório.
+6. Na seção **Access keys**, guarde o valor da caixa de texto **Key 1**. Você usará esse valor posteriormente no laboratório.
 
 #### Passo 7: Publicar eventos do Event Grid do .NET
 
@@ -142,7 +142,7 @@ _Crie um Projeto .NET_
 
 5. Para rodar os comandos a seguir é necessário possuir o dotnet core 3.1. Caso não tenha instalado, baixe e instale a partir do link: [Download .NET Core 3.1](https://dotnet.microsoft.com/en-us/download/dotnet).
 
-    >**Observação**: Caso tenha instalado o .NET 6.0 poderá haver erro devido a mudança de bibliotecas. Desistale e instale o .NET Core 3.1.
+    >**Nota**: Caso tenha instalado o .NET 6.0 poderá haver erro devido a mudança de bibliotecas. Desistale e instale o .NET Core 3.1.
 
 6. De volta ao terminal do VScode, rode o seguinte comando para criar um novo projeto .NET chamado **EventPublisher** na pasta atual:
 
@@ -150,7 +150,7 @@ _Crie um Projeto .NET_
     dotnet new console --name EventPublisher --output .
     ```
 
-    > **Observação**: o comando **dotnet new** criará um novo projeto de **console** em uma pasta com o mesmo nome do projeto.
+    > **Nota**: o comando **dotnet new** criará um novo projeto de **console** em uma pasta com o mesmo nome do projeto.
 
 7. Execute o seguinte comando para importar a versão 4.1.0 do **Azure.Messaging.EventGrid** do NuGet:
 
@@ -158,7 +158,7 @@ _Crie um Projeto .NET_
     dotnet add package Azure.Messaging.EventGrid --version 4.1.0
     ```
 
-    > **Observação**: o comando **dotnet add package** adicionará o pacote **Microsoft.Azure.EventGrid** do NuGet. Para mais informações, acesse [Azure.Messaging.EventGrid](https://www.nuget.org/packages/Azure.Messaging.EventGrid/4.1.0).
+    > **Nota**: o comando **dotnet add package** adicionará o pacote **Microsoft.Azure.EventGrid** do NuGet. Para mais informações, acesse [Azure.Messaging.EventGrid](https://www.nuget.org/packages/Azure.Messaging.EventGrid/4.1.0).
 
 8. Execute o seguinte comando para compilar o aplicativo Web .NET:
 
@@ -166,7 +166,6 @@ _Crie um Projeto .NET_
     dotnet build
     ```
 
-9. Selecione **Kill Terminal** ou o ícone **Recycle Bin** para fechar o terminal atualmente aberto e quaisquer processos associados.
 
 #### Passo 7: Modifique a classe Program para se conectar ao Event Grid
 
@@ -360,7 +359,7 @@ _Crie um Projeto .NET_
 
 1. Observe a saída da mensagem de sucesso do aplicativo de console em execução no momento.
 
-1. Selecione **Kill Terminal** ou o ícone **Recycle Bin** para fechar o terminal atualmente aberto e quaisquer processos associados.
+1. Feche o terminal atualmente aberto e quaisquer processos associados.
 
 #### Passo 9: Observe os eventos publicados
 
