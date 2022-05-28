@@ -296,8 +296,7 @@ az network bastion create --name $bastionName --public-ip-address $publicIpBasti
    --vnet-name $vNetName `
    --subnet $subnetWebName `
    --nsg $nsg `
-   --public-ip-address """" `
-   --zone $i
+   --public-ip-address """"
 }  
 ```
 
