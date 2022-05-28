@@ -691,20 +691,20 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    $lbName = "lbData"
    $frontendIpName = "frontEndData"
    $backendPoolName = "backEndPoolData"
-   $probeLbBusinessName = "healthProbeData"
-   $ruleLbBusinessName= "httpRuleData"
+   $probeLbDataName = "healthProbeData"
+   $ruleLbDataName= "httpRuleData"
 
    
    az network lb rule create `
    --resource-group $resourceGroup `
    --lb-name $lbName `
-   --name $ruleLbBusinessName `
+   --name $ruleLbDataName `
    --protocol tcp `
    --frontend-port 80 `
    --backend-port 80 `
    --frontend-ip-name $frontendIpName `
    --backend-pool-name $backendPoolName `
-   --probe-name $probeLbBusinessName `
+   --probe-name $probeLbDataName `
    --idle-timeout 15 `
    --enable-tcp-reset true
    ```
@@ -809,7 +809,7 @@ $ipFrontLbData = "10.5.3.6"
    
 echo "Criando regras para nsgBusiness"
 
-az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name lbData --access Allow --protocol Tcp --direction Outbound --priority 120 --source-address-prefix "*" --source-port-range "*" --destination-address-prefix "$ipFrontLbBusiness" --destination-port-range 1443 
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name lbData --access Allow --protocol Tcp --direction Outbound --priority 120 --source-address-prefix "*" --source-port-range "*" --destination-address-prefix "$ipFrontLbData" --destination-port-range 1443 
    ```
 
    
