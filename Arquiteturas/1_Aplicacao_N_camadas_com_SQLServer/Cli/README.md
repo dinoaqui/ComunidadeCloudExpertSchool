@@ -47,7 +47,6 @@ Execute o comando a seguir:
    $location = "eastus"
 
    az group create --name $name --location $location
-
    ```
 
 
@@ -70,7 +69,6 @@ Execute o comando a seguir:
    --name $vNetName --address-prefix $addressPrefixVNet `
    --location "$location" --subnet-name $subnetNameApg `
    --subnet-prefix $subnetPrefixApg
-
    ```
 
 ## Criando demais subnets
@@ -88,7 +86,6 @@ $subnetPrefixBastion = "10.5.254.0/27"
 
 echo "Creating subnet BastionHost"
 az network vnet subnet create --address-prefix $subnetPrefixBastion --name $subnetBastionName --resource-group $resourceGroup --vnet-name $vNetName
-
    ```
 
 ### Criando subnet Web 
@@ -104,7 +101,6 @@ $subnetPrefixWeb = "10.5.1.0/24"
 
 echo "Creating subnet Web"
 az network vnet subnet create --address-prefix $subnetPrefixWeb --name $subnetWebName --resource-group $resourceGroup --vnet-name $vNetName
-
    ```
 
 
@@ -121,7 +117,6 @@ $subnetPrefixBusiness = "10.5.2.0/24"
 
 echo "Creating subnet Bussiness"
 az network vnet subnet create --address-prefix $subnetPrefixBusiness --name $subnetBusinessName --resource-group $resourceGroup --vnet-name $vNetName
-
    ```
 
 ### Criando subnet Data 
@@ -137,7 +132,6 @@ $subnetPrefixData = "10.5.3.0/24"
 
 echo "Creating subnet data"
 az network vnet subnet create --address-prefix $subnetPrefixData --name $subnetDataName --resource-group $resourceGroup --vnet-name $vNetName
-
    ```
 
 
@@ -156,7 +150,6 @@ $subnetPrefixADDS = "10.5.4.0/24"
 
 echo "Creating subnet AD"
 az network vnet subnet create --address-prefix $subnetPrefixADDS --name $subnetADDSName --resource-group $resourceGroup --vnet-name $vNetName
-
    ```
 
 ## Criar NSG's
@@ -175,7 +168,6 @@ az network nsg create --resource-group $resourceGroup --name "nsgWeb" --location
 az network nsg create --resource-group $resourceGroup --name "nsgBusiness" --location "$location"
 az network nsg create --resource-group $resourceGroup --name "nsgData" --location "$location"
 az network nsg create --resource-group $resourceGroup --name "nsgADDS" --location "$location"
-
    ```
 
 ## Criando regras para os NSG's
@@ -209,9 +201,6 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgData" 
 echo "Criando regras para nsgADDS"
 
 az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgADDS" --name AllowBastion --access Allow --protocol Tcp --direction Inbound --priority 110 --source-address-prefix "10.5.254.0/27" --source-port-range "*" --destination-address-prefix "*" --destination-port-range 3389
-
-
-   
    ```
 
 ## Associar os NSG's às subnets.
