@@ -840,7 +840,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
       
     az vm create `
     --resource-group $resourceGroup `
-    --name $$name `
+    --name $name `
     --size $vmSize `
     --image Win2019Datacenter `
     --admin-username $adminUsername `
