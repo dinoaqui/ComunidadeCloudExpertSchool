@@ -720,7 +720,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
       $resourceGroup = "rg-ntier"
 
       # Storage
-      $StorageName = "rgntierstoragelab"
+      $StorageName = "rgntierstorage<yourname>"
       $StorageSku = "Premium_LRS"
       $StorageAccount = New-AzStorageAccount -ResourceGroupName $resourceGroup -Name $StorageName -SkuName $StorageSku -Kind "Storage" -Location $Location
    ```
