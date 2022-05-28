@@ -822,7 +822,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
   for ($i = 1; $i -lt 3 ; $i++)
 {
       
-      $vmADDSName =  = "vmADDSNTier$i"
+      $vmADDSName = "vmADDSNTier$i"
       $resourceGroup = "rg-ntier"
       $image = "Win2019datacenter"
       $login = "azureuser"
