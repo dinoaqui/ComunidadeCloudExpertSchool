@@ -640,8 +640,6 @@ $ipFrontLbBusiness = "10.5.2.7"
 echo "Criando regras para nsgWeb"
 
 az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" --name lbBusiness --access Allow --protocol Tcp --direction Outbound --priority 120 --source-address-prefix "*" --source-port-range "*" --destination-address-prefix "$ipFrontLbBusiness" --destination-port-range 80
-
-   
    ```
 
 
@@ -670,7 +668,6 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    --subnet $subnetDataName `
    --frontend-ip-name $frontendIpName `
    --backend-pool-name $backendPoolName
-  
  ```
 
 ### Criar a investigação de integridade
@@ -776,9 +773,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
       --vnet-name $vNetName `
       --subnet $subnetDataName `
       --nsg $nsg `
-      --public-ip-address """" 
-      
-      
+      --public-ip-address """"    
 } 
 
 
@@ -809,9 +804,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
       --nic-name $nicName `
       --resource-group $resourceGroup `
       --lb-name $lbName
-   }
-  
-         
+   }       
    ```
 ### Criar uma regra de saída no NSG da camada bussiness direcionado o tráfego para o loadbalancer da camada de Banco de Dados.
 
@@ -836,9 +829,7 @@ $ipFrontLbData = "10.5.3.6"
    
 echo "Criando regras para nsgBusiness"
 
-az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name lbData --access Allow --protocol Tcp --direction Outbound --priority 120 --source-address-prefix "*" --source-port-range "*" --destination-address-prefix "$ipFrontLbBusiness" --destination-port-range 1443
-
-   
+az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusiness" --name lbData --access Allow --protocol Tcp --direction Outbound --priority 120 --source-address-prefix "*" --source-port-range "*" --destination-address-prefix "$ipFrontLbBusiness" --destination-port-range 1443 
    ```
 
    
@@ -878,8 +869,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
     --nsg $nsgADDS `
     --private-ip-address $privateIpAddress `
     --no-wait `
-    --public-ip-address """"
-    
+    --public-ip-address """"    
    }  
    ```
 
