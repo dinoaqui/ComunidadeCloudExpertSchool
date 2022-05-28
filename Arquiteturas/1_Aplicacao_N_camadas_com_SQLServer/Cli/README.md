@@ -585,7 +585,7 @@ for ($i = 1; $i -lt 4 ; $i++)
       $lbName = "lbBusiness"
       $backendPoolName = "backEndPoolBusiness"
       $nicName = "vmBusiNTier"+$i+"VMNic"
-      $ipConfigName = "ipconfigvmBusNTier$i"
+      $ipConfigName = "ipconfigvmBusiNTier$i"
    
 
       az network nic ip-config address-pool add `
