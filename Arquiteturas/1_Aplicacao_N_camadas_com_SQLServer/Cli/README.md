@@ -579,7 +579,7 @@ for ($i = 1; $i -lt 4 ; $i++)
       --vnet-name $vNetName `
       --subnet $subnetBusinessName `
       --nsg $nsg `
-      --public-ip-address """"
+      --public-ip-address """" `
       --zone $i
 }
 
