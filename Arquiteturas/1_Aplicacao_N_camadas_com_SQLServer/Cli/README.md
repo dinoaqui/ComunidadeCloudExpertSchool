@@ -830,11 +830,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
       $nsgADDS = "nsgADDS"
       $vNetName = "vnet-ntier"
       $subnetADDSName = "subnet-adds"
-     
-    
-     
       
-
       az vm create `
       --name $vmADDSName `
       --resource-group $resourceGroup `
@@ -847,9 +843,6 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
       --nsg $nsgADDS `
       --public-ip-address """"    
 } 
-
-
-   
    ```
 
 
