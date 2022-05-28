@@ -817,43 +817,40 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgBusine
 ## Criar máquinas virtuais da camada ADDS
 
 
-   **Cloud Shell**  
-   ```
-   $location= "eastus"
-   $resourceGroup = "rg-ntier"
-   $nsgADDS = "nsgADDS"
-   $vNetName = "vnet-ntier"
-   $vNetAddress= "10.5.0.0/16"
-   $subnetADDSName = "subnet-adds"
-   $subnetPrefixADDS = "10.5.4.0/24"
-   $vmSize= "Standard_DS1_v2"
-   $dataDiskSize= 20
-   $image = "Win2019datacenter"
-   $adminUsername= "azureuser"
-   $adminPassword= "P4ss0w0rd555*"
-  
-
-   for ($i = 1; $i -lt 3 ; $i++)
-   {
-      $name = "domainController$i"
-      $privateIpAddress = "10.5.4.1$i"
+**Cloud Shell**  
+   ```powershell
+  for ($i = 1; $i -lt 3 ; $i++)
+{
       
-    az vm create `
-    --resource-group $resourceGroup `
-    --name $name `
-    --size $vmSize `
-    --image Win2019Datacenter `
-    --admin-username $adminUsername `
-    --admin-password $adminPassword `
-    --data-disk-sizes-gb $dataDiskSize `
-    --data-disk-caching None `
-    --nsg $nsgADDS `
-    --private-ip-address $privateIpAddress `
-    --no-wait `
-    --public-ip-address """"    
-   }  
-   ```
+      $vmADDSName =  = "vmADDSNTier$i"
+      $resourceGroup = "rg-ntier"
+      $image = "Win2019datacenter"
+      $login = "azureuser"
+      $senha = "P4ss0w0rd555*"
+      $nsgADDS = "nsgADDS"
+      $vNetName = "vnet-ntier"
+      $subnetADDSName = "subnet-adds"
+     
+    
+     
+      
 
+      az vm create `
+      --name $vmADDSName `
+      --resource-group $resourceGroup `
+      --admin-password $senha `
+      --admin-username $login `
+      --image $image `
+      --no-wait `
+      --vnet-name $vNetName `
+      --subnet $subnetADDSName `
+      --nsg $nsgADDS `
+      --public-ip-address """"    
+} 
+
+
+   
+   ```
 
 
 
