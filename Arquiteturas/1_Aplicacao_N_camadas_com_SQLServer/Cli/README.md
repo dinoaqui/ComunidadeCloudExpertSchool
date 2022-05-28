@@ -688,7 +688,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    $resourceGroup = "rg-ntier"
    $vNetName = "vnet-ntier"
    $subnetDataName = "subnet-data"
-   $lbName = "lbBusiness"
+   $lbName = "lbData"
    $frontendIpName = "frontEndData"
    $backendPoolName = "backEndPoolData"
    $probeLbBusinessName = "healthProbeData"
