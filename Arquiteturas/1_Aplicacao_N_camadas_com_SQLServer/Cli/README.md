@@ -584,7 +584,7 @@ for ($i = 1; $i -lt 4 ; $i++)
       $resourceGroup = "rg-ntier"
       $lbName = "lbBusiness"
       $backendPoolName = "backEndPoolBusiness"
-      $nicName = "vmBusNTier"+$i+"VMNic"
+      $nicName = "vmBusiNTier"+$i+"VMNic"
       $ipConfigName = "ipconfigvmBusNTier$i"
    
 
