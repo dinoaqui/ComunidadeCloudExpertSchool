@@ -578,7 +578,7 @@ for ($i = 1; $i -lt 4 ; $i++)
       --vnet-name $vNetName `
       --subnet $subnetBusinessName `
       --nsg $nsg `
-      --public-ip-address """" --zone $i
+      --public-ip-address """"
 }
 
  ```
