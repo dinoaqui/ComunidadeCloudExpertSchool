@@ -249,8 +249,6 @@ az network vnet subnet update --vnet-name $vNetName --name $subnetDataName --res
 
 echo "Associate nsgADDS ao subnetADDSName"
 az network vnet subnet update --vnet-name $vNetName --name $subnetADDSName --resource-group $resourceGroup --network-security-group $nsgADDS
-
-
    ```
 
 
@@ -349,8 +347,7 @@ Após a conclusão do passo acima, desaloque a aloque novamente cada vm.
    az network application-gateway create -g $resourceGroup -n $apgName --capacity 3 `
    --sku Standard_Medium --vnet-name $vNetName --subnet $subnetNameApg `
    --http-settings-cookie-based-affinity Disabled `
-   --public-ip-address $publicIpApgName --servers $ipVMWeb1 $ipVMWeb2 $ipVMWeb3 
-
+   --public-ip-address $publicIpApgName --servers $ipVMWeb1 $ipVMWeb2 $ipVMWeb3
    ```
 
    ![image](../../images/sitefunc0.png)
@@ -372,8 +369,7 @@ $resourceGroup = "rg-ntier"
 $dnsName = "comunidadecloudexpert.ga"
 
 
-az network dns zone create -g $resourceGroup -n $dnsName
-  
+az network dns zone create -g $resourceGroup -n $dnsName 
  ```
 ### Criar uma zona DNS
 
@@ -393,7 +389,6 @@ $ipaddress  = "<ip publico do aplication Gateway>"
 
 
 az network dns record-set a add-record -g $resourceGroup -z $zoneName -n www -a $ipaddress
-  
  ```
 ### Testar a resolução de nome
 Agora que você tem uma zona DNS de teste com um registro 'A', é necessária alterar os nameservers dentro da provedora de dominio.
@@ -441,8 +436,7 @@ $location = "eastus"
 $ddosName = "ddosNtier"
 
 
-az network ddos-protection create --location $location --name $ddosName --resource-group $resourceGroup --vnets $vNetName
-  
+az network ddos-protection create --location $location --name $ddosName --resource-group $resourceGroup --vnets $vNetName 
  ```
 
 Após a criação do DDos, iremos habilitalo. Dentro do portal, entre na vnet, na aba setings e selecione DDOS protection.
@@ -484,7 +478,6 @@ az network lb create `
 --subnet $subnetBusinessName `
 --frontend-ip-name $frontendIpName `
 --backend-pool-name $backendPoolName
-  
  ```
 
 ### Criar a investigação de integridade
@@ -580,7 +573,6 @@ for ($i = 1; $i -lt 4 ; $i++)
       --nsg $nsg `
       --public-ip-address """"
 }
-
  ```
 
    Após a criação das vms, inserir comando abaixo em cada vm pelo Run comand no portal e desligar e ligar vm's novamente.
@@ -613,8 +605,7 @@ for ($i = 1; $i -lt 4 ; $i++)
       --nic-name $nicName `
       --resource-group $resourceGroup `
       --lb-name $lbName
-   }
-         
+   }     
    ```
 ## Criar uma regra de saída no NSG da camada web direcionado o trafego para o loadbalancer da camada Business.
 
