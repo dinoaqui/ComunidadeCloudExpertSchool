@@ -695,7 +695,7 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
    $ruleLbDataName= "httpRuleData"
 
    
-   az network lb rule create `
+   aaz network lb rule create `
    --resource-group $resourceGroup `
    --lb-name $lbName `
    --name $ruleLbDataName `
@@ -770,21 +770,22 @@ az network nsg rule create --resource-group $resourceGroup --nsg-name "nsgWeb" -
 
    ``` 
    for ($i = 1; $i -lt 3 ; $i++)
-   {
-      $resourceGroup = "rg-ntier"
-      $lbName = "lbData"
-      $backendPoolName = "backEndPoolData"
-      $nicName = "vmBusiNTier"+$i+"VMNic"
-      $ipConfigName = "ipconfigvmDataNTier$i"
-   
+{
+   $resourceGroup = "rg-ntier"
+   $lbName = "lbData"
+   $backendPoolName = "backEndPoolData"
+   $nicName = "vmDataNTier"+$i+"VMNic"
+   $ipConfigName = "ipconfigvmDataNTier$i"
 
-      az network nic ip-config address-pool add `
-      --address-pool $backendPoolName `
-      --ip-config-name $ipConfigName `
-      --nic-name $nicName `
-      --resource-group $resourceGroup `
-      --lb-name $lbName
-   }       
+
+   az network nic ip-config address-pool add `
+   --address-pool $backendPoolName `
+   --ip-config-name $ipConfigName `
+   --nic-name $nicName `
+   --resource-group $resourceGroup `
+   --lb-name $lbName
+}
+
    ```
 ### Criar uma regra de saída no NSG da camada bussiness direcionado o tráfego para o loadbalancer da camada de Banco de Dados.
 
